@@ -194,7 +194,8 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
 File selectedfile=jFileChooser1.getSelectedFile();
 jTextField1.setText(selectedfile.getAbsolutePath());
-String output=new GenerateString().getRawOutput(selectedfile.getAbsolutePath());
+String query = new GenerateString().getRawOutput(selectedfile.getAbsolutePath());
+String output=new GenerateString().getIdentifiedDetails(query);
 jTextArea1.setText(output);
 
 // TODO add your handling code here:

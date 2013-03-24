@@ -50,6 +50,11 @@ public class GenerateString {
         }
         count=codestring.length();
         System.out.println(codestring+"\ncount:"+count);
+        Object jsonobj = JSONValue.parse(codestring);
+        JSONArray jsonarr = (JSONArray) jsonobj;
+        JSONObject jobj =(JSONObject) jsonarr.get(0);
+        codestring = jobj.get("code").toString();
+        
         return codestring;
        // File newfile=new File("abc1.txt");
         //newfile.createNewFile();
@@ -93,16 +98,17 @@ public class GenerateString {
                i++;
                
            }
-           secndstr = result.substring(firstPoint, secondPoint+1);
-           JOptionPane.showMessageDialog(null, "result: "+result);
+         secndstr = result.substring(firstPoint, secondPoint+1);
+         JOptionPane.showMessageDialog(null, "result: "+result);
+         System.out.println(result);
          Object jsonObj = JSONValue.parse(result);
          JSONObject jsobj = (JSONObject) jsonObj;
          
          
         //JSONArray jsonArr = (JSONArray)jsonObj;
          //JSONObject jsonob =(JSONObject) jsonArr.get(0);
-         JSONArray jsonArr = (JSONArray)jsobj.get("songs");
-         result = result +"\n id :" + jsonArr.toString();
+         JSONObject temp =(JSONObject) jsobj.get("status");
+         result = result +"\n id :" + temp.toJSONString();
          
          return result;
       //return new TestIdentification().getResult(codeString);
