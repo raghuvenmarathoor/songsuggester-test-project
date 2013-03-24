@@ -97,7 +97,7 @@ public class BasicPlayerTest implements BasicPlayerListener{
             playerVolume = volume;
             if(control != null){
             try{
-                JOptionPane.showMessageDialog(null,"VOlume"+ volume);
+                //JOptionPane.showMessageDialog(null,"VOlume"+ volume);
                 control.setGain(volume);
             } catch(BasicPlayerException ex){
                 JOptionPane.showMessageDialog(null, "Volume changing error:" + ex.getMessage());

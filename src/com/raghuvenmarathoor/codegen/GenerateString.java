@@ -7,6 +7,10 @@ package com.raghuvenmarathoor.codegen;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import javax.swing.JOptionPane;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
@@ -67,5 +71,55 @@ public class GenerateString {
      }
     }
 
+//    private static String identifyThisSong(java.lang.String codeString) {
+//        com.raghuvenmarathoor.songidentify.SongIdentify_Service service = new com.raghuvenmarathoor.songidentify.SongIdentify_Service();
+//        com.raghuvenmarathoor.songidentify.SongIdentify port = service.getSongIdentifyPort();
+//        return port.identifyThisSong(codeString);
+//    }
+//
+  public String getIdentifiedDetails(String codeString){
+        String result = identifyThisSong(codeString);
+           int i =0, firstPoint = 0 ,secondPoint = 0;
+           String secndstr = "";
+           while(i<result.length()){
+               if(result.charAt(i)=='['){
+    
+                   firstPoint = i;
+}
+               if(result.charAt(i)==']'){
+                   
+                   secondPoint = i;
+               }
+               i++;
+               
+           }
+           secndstr = result.substring(firstPoint, secondPoint+1);
+           JOptionPane.showMessageDialog(null, "result: "+result);
+         Object jsonObj = JSONValue.parse(result);
+         JSONObject jsobj = (JSONObject) jsonObj;
+         
+         
+        //JSONArray jsonArr = (JSONArray)jsonObj;
+         //JSONObject jsonob =(JSONObject) jsonArr.get(0);
+         JSONArray jsonArr = (JSONArray)jsobj.get("songs");
+         result = result +"\n id :" + jsonArr.toString();
+         
+         return result;
+      //return new TestIdentification().getResult(codeString);
+    }
+//
+//    private static String identifyThisSong_1(java.lang.String codeString) {
+//        com.raghuvenmarathoor.songidentify.SongIdentify_Service service = new com.raghuvenmarathoor.songidentify.SongIdentify_Service();
+//        com.raghuvenmarathoor.songidentify.SongIdentify port = service.getSongIdentifyPort();
+//        return port.identifyThisSong(codeString);
+//    }
+
+    private static String identifyThisSong(java.lang.String codeString) {
+        com.raghuvenmarathoor.webservices.SongIdentify_Service service = new com.raghuvenmarathoor.webservices.SongIdentify_Service();
+        com.raghuvenmarathoor.webservices.SongIdentify port = service.getSongIdentifyPort();
+        return port.identifyThisSong(codeString);
+    }
+
+    
     
 }

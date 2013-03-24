@@ -20,6 +20,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.filechooser.FileFilter;
 /**
  *
@@ -28,7 +29,7 @@ import javax.swing.filechooser.FileFilter;
 public class PlayerFrame extends javax.swing.JFrame {
 
     Thread playerThread = null;
-    int playlistPointer = 0;
+    public static int playlistPointer = 0;
     
     public static boolean play = false;
     boolean pause = false;
@@ -42,6 +43,7 @@ public class PlayerFrame extends javax.swing.JFrame {
         playListlistmodel = new DefaultListModel();
         playListManager=new PlayListManager();
         basePlayer=new BasicPlayerTest();
+        jListPlayList.setCellRenderer(new SelectedListItemStyle());
     }
     
     protected File retrieveFromPlaylist(){
@@ -151,7 +153,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                     .addComponent(jLabelSampleRate)
                     .addComponent(jLabelChannels)
                     .addComponent(jLabelBitRate))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,10 +191,10 @@ public class PlayerFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jListPlayList);
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18));
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel4.setText("Play List");
 
-        jButtonAddMusic.setFont(new java.awt.Font("Tahoma", 0, 8));
+        jButtonAddMusic.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         jButtonAddMusic.setText("Add Music");
         jButtonAddMusic.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -219,7 +221,7 @@ public class PlayerFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -293,8 +295,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabelFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(85, 85, 85))
         );
         jPanel6Layout.setVerticalGroup(
@@ -417,7 +418,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                         .addComponent(jLabelNext, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jSliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSliderSeekbar, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
+                    .addComponent(jSliderSeekbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -443,13 +444,10 @@ public class PlayerFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -509,7 +507,7 @@ private void jListPlayListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
 
         if(2==evt.getClickCount()){
             String path = playListManager.extractFromPlaylist(jListPlayList.getSelectedIndex()).getSongPath();
-            playThisSong(new File(playListManager.extractFromPlaylist(jListPlayList.getSelectedIndex()).getSongPath()));
+            playThisSong(new File(playListManager.extractFromPlaylist(jListPlayList.getSelectedIndex()).getSongPath()),jListPlayList.getSelectedIndex());
         } else {
             
         }
@@ -544,7 +542,7 @@ public void playNextSong(){
     }
     File mp3File = new File(playListManager.extractFromPlaylist(nextIndex).getSongPath());
     jListPlayList.setSelectedIndex(nextIndex);
-    playThisSong(mp3File);
+    playThisSong(mp3File,nextIndex);
 }
 
 public void playPreviousSong() {
@@ -570,7 +568,7 @@ public void playPreviousSong() {
     }
     File mp3File = new File(playListManager.extractFromPlaylist(previousIndex).getSongPath());
     jListPlayList.setSelectedIndex(previousIndex);
-    playThisSong(mp3File);
+    playThisSong(mp3File,previousIndex);
         
     
 }
@@ -681,7 +679,7 @@ private void jLabelPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     
     
     if(play == false){
-      playThisSong(mp3File);
+      playThisSong(mp3File,0);
     }
     else{
         
@@ -717,8 +715,13 @@ private void jSliderVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
 }//GEN-LAST:event_jSliderVolumeStateChanged
    
 
-public void playThisSong(File songFile){
+public void playThisSong(File songFile,int playingIndex){
         basePlayer.stop();
+        playlistPointer = playingIndex;
+//        ListCellRenderer listcellRender = jListPlayList.getCellRenderer();
+//        listcellRender.getListCellRendererComponent(jListPlayList, jListPlayList.getModel().getElementAt(playlistPointer) , playlistPointer, false , false).setBackground(Color.red);
+//        jListPlayList.updateUI();
+        
         basePlayer.play(songFile.getAbsolutePath(),this);
        play = true;     
     SongMetadata sngmeta=new SongMetadata(songFile.getAbsolutePath());
@@ -732,7 +735,7 @@ public void playThisSong(File songFile){
         jLabelTitle.setText(sngmeta.getTitle());
         jLabelGenre.setText(sngmeta.getGenre());
         jLabelFileName.setText(sngmeta.getFileName());
-        
+        //jLabelTotalTime.setText("/"+sngmeta.getTrackLength());
     jLabelPlay.setIcon(new ImageIcon(".\\Resources\\pause.png"));
  }
    
