@@ -54,7 +54,7 @@ public class GenerateString {
         JSONArray jsonarr = (JSONArray) jsonobj;
         JSONObject jobj =(JSONObject) jsonarr.get(0);
         codestring = jobj.get("code").toString();
-        
+        JOptionPane.showMessageDialog(null,codestring);
         return codestring;
        // File newfile=new File("abc1.txt");
         //newfile.createNewFile();
@@ -84,7 +84,7 @@ public class GenerateString {
 //
   public String getIdentifiedDetails(String codeString){
         String result = identifyThisSong(codeString);
-        JOptionPane.showMessageDialog(null, result);
+        //JOptionPane.showMessageDialog(null, result);
            int i =0, firstPoint = 0 ,secondPoint = 0;
            String secndstr = "";
            while(i<result.length()){

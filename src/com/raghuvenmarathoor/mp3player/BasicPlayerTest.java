@@ -77,6 +77,15 @@ public class BasicPlayerTest implements BasicPlayerListener{
             Logger.getLogger(BasicPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void resume(){
+        try {
+            control.resume();
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(BasicPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void play(String fileName,PlayerFrame playerObj){
          player=new BasicPlayer();
          playerFrame = playerObj;
