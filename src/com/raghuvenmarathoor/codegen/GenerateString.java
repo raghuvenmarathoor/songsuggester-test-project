@@ -84,6 +84,7 @@ public class GenerateString {
 //
   public String getIdentifiedDetails(String codeString){
         String result = identifyThisSong(codeString);
+        JOptionPane.showMessageDialog(null, result);
            int i =0, firstPoint = 0 ,secondPoint = 0;
            String secndstr = "";
            while(i<result.length()){
