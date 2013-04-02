@@ -676,18 +676,27 @@ private void jLabelPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 //    //if(av=JFileChooser.APPROVE_OPTION)
       
       File mp3File = retrieveFromPlaylist();
-    
-    
-    if(play == false){
-      playThisSong(mp3File,0);
-    }
-    else{
+      if(play == true && pause == false){
         
        pause();
         
-    }
+       } else if(pause == true){
+        resume();
+        pause = false;
+         } else if(play == false){
+         playThisSong(mp3File,0);
+       }
+    
+    
+    
+    
+    
 }//GEN-LAST:event_jLabelPlayMouseClicked
 
+private void resume(){
+    basePlayer.resume();
+    jLabelPlay.setIcon(new ImageIcon(".\\Resources\\pause.png"));
+}
 private void jLabelPreviousMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelPreviousMouseExited
 jLabelPrevious.setBorder(BorderFactory.createEmptyBorder());// TODO add your handling code here:
 }//GEN-LAST:event_jLabelPreviousMouseExited
@@ -743,6 +752,7 @@ public void playThisSong(File songFile,int playingIndex){
    public void pause(){
        
        basePlayer.pause();
+       pause = true;
        jLabelPlay.setIcon(new ImageIcon(".\\Resources\\play.png"));
     }
     /**
