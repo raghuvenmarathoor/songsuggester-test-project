@@ -369,6 +369,13 @@
                           </Group>
                           <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="111" max="-2" attributes="0"/>
+                          <Component id="jLabelElapsedTime" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelTrackLengthTotal" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -400,6 +407,11 @@
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabelTrackLengthTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelElapsedTime" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -455,6 +467,16 @@
                 <Component class="javax.swing.JLabel" name="jLabelGenre">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&lt;genre&gt;"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelTrackLengthTotal">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel12"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelElapsedTime">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel13"/>
                   </Properties>
                 </Component>
               </SubComponents>

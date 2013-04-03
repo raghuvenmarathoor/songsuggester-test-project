@@ -24,10 +24,12 @@ public class BasicPlayerTest implements BasicPlayerListener{
     
     BasicPlayer player = null;
     double playerVolume = 0;
-    
+    int tracklength = 0 ;
     BasicController control = null;
     PlayerFrame playerFrame = null;
     long fileSize = 0;
+    boolean elapsedTimeFlag = false;
+    int infosize = 0;
     @Override
     public void opened(Object o, Map map) {
        // JOptionPane.showMessageDialog(null, "Opened");
@@ -36,16 +38,26 @@ public class BasicPlayerTest implements BasicPlayerListener{
 
     @Override
     public void progress(int i, long l, byte[] bytes, Map map) {
+        double percent = 0;
+        
+        if(elapsedTimeFlag == true){
+              infosize = i;
+              JOptionPane.showMessageDialog(null, "Information size:"+infosize);
+              elapsedTimeFlag = false;
+          }
       if(playerFrame != null){
-          double percent = (double) i/fileSize;
+           percent = (double) (i - infosize)/(fileSize - infosize);
           int sliderPos =(int) (percent * (double)1000);
           //System.out.println("percent:"+percent+"sliderpos:"+ sliderPos+"\n");
 //          if(sliderPos >= 1){
 //          JOptionPane.showMessageDialog(null, "Slider Position:"+ sliderPos);
 //          }
+          
+          playerFrame.setElapsedTime((int) (percent * (double)tracklength ));
+          //JOptionPane.showMessageDialog(null,(int) (percent * (double)tracklength ) );
           playerFrame.setSliderPosition(sliderPos);
       }
-        //System.out.println("\nvalues i = "+i+" l ="+ l + "filesize :"+ fileSize );
+        System.out.println("\nvalues i = "+i+" l ="+ l + "filesize :"+ fileSize+ "percent :"+ percent );
         //JOptionPane.showMessageDialog(null, "Progress");
       //  throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -64,7 +76,7 @@ public class BasicPlayerTest implements BasicPlayerListener{
                System.out.println(bpe.getPosition());
            }
            if(bpe.getCode() == BasicPlayerEvent.SEEKING){
-               JOptionPane.showMessageDialog(null, "seeking");
+              System.out.println("seeking");// JOptionPane.showMessageDialog(null, "seeking");
            }
            if(bpe.getCode() == BasicPlayerEvent.PAUSED){
                JOptionPane.showMessageDialog(null, bpe.getPosition());
@@ -80,6 +92,7 @@ public class BasicPlayerTest implements BasicPlayerListener{
     public void pause(){
         try {
             control.pause();
+            
         } catch (BasicPlayerException ex) {
             Logger.getLogger(BasicPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,9 +127,11 @@ public class BasicPlayerTest implements BasicPlayerListener{
             Logger.getLogger(BasicPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void play(String fileName,PlayerFrame playerObj){
+    public void play(String fileName,PlayerFrame playerObj,int tracklength){
          player=new BasicPlayer();
          playerFrame = playerObj;
+         elapsedTimeFlag = true;
+         this.tracklength = tracklength;
          control=(BasicController)player;
         player.addBasicPlayerListener(this);
         try{

@@ -123,9 +123,10 @@ public class GenerateString {
 //    }
 
     private static String identifyThisSong(java.lang.String codeString) {
-        com.raghuvenmarathoor.webservices.SongIdentify_Service service = new com.raghuvenmarathoor.webservices.SongIdentify_Service();
-        com.raghuvenmarathoor.webservices.SongIdentify port = service.getSongIdentifyPort();
-        return port.identifyThisSong(codeString);
+       // com.raghuvenmarathoor.webservices.SongIdentify_Service service = new com.raghuvenmarathoor.webservices.SongIdentify_Service();
+        //com.raghuvenmarathoor.webservices.SongIdentify port = service.getSongIdentifyPort();
+        //return port.identifyThisSong(codeString);
+        return "webservice error";
     }
 
     

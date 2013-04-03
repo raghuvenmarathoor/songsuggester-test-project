@@ -98,6 +98,7 @@ public class SongMetadata {
                trackLength = mp3header.getTrackLengthAsString();
                trackLengthInteger = mp3header.getTrackLength();
                encoder = mp3header.getEncoder();
+               
                fileName = mp3file.getName();
 
             
