@@ -36,8 +36,16 @@ public class BasicPlayerTest implements BasicPlayerListener{
 
     @Override
     public void progress(int i, long l, byte[] bytes, Map map) {
-      
-        System.out.println("\nvalues i = "+i+" l ="+ l + "filesize :"+ fileSize );
+      if(playerFrame != null){
+          double percent = (double) i/fileSize;
+          int sliderPos =(int) (percent * (double)1000);
+          //System.out.println("percent:"+percent+"sliderpos:"+ sliderPos+"\n");
+//          if(sliderPos >= 1){
+//          JOptionPane.showMessageDialog(null, "Slider Position:"+ sliderPos);
+//          }
+          playerFrame.setSliderPosition(sliderPos);
+      }
+        //System.out.println("\nvalues i = "+i+" l ="+ l + "filesize :"+ fileSize );
         //JOptionPane.showMessageDialog(null, "Progress");
       //  throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -45,11 +53,21 @@ public class BasicPlayerTest implements BasicPlayerListener{
     @Override
     public void stateUpdated(BasicPlayerEvent bpe) {
         //JOptionPane.showMessageDialog(null,"STATE UPDATED:\n" + bpe.getCode());
-       if(bpe.getCode() == BasicPlayerEvent.SEEKED){
-           JOptionPane.showMessageDialog(null, "seek");
+       if(bpe.getCode() == BasicPlayerEvent.EOM){
+           JOptionPane.showMessageDialog(null, "EOM");
            if(PlayerFrame.play == true){
                playerFrame.playNextSong();
                
+           }
+           if(bpe.getCode() == BasicPlayerEvent.SEEKED){
+               JOptionPane.showMessageDialog(null, "Seeked");
+               System.out.println(bpe.getPosition());
+           }
+           if(bpe.getCode() == BasicPlayerEvent.SEEKING){
+               JOptionPane.showMessageDialog(null, "seeking");
+           }
+           if(bpe.getCode() == BasicPlayerEvent.PAUSED){
+               JOptionPane.showMessageDialog(null, bpe.getPosition());
            }
        }
        // throw new UnsupportedOperationException("Not supported yet.");
@@ -70,8 +88,9 @@ public class BasicPlayerTest implements BasicPlayerListener{
     public void stop(){
         try {
           if(control!=null){
-            control.stop();
-            control = null;
+           control.stop();
+           control = null;
+             // control.seek(10000);
           }
         } catch (BasicPlayerException ex) {
             Logger.getLogger(BasicPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,11 +100,20 @@ public class BasicPlayerTest implements BasicPlayerListener{
     public void resume(){
         try {
             control.resume();
+            
         } catch (BasicPlayerException ex) {
             Logger.getLogger(BasicPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    public void seek(long seekPosition){
+        try {
+            //JOptionPane.showMessageDialog(null, seekPosition+"/"+fileSize);
+            control.seek(seekPosition);
+        } catch (BasicPlayerException ex) {
+            Logger.getLogger(BasicPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public void play(String fileName,PlayerFrame playerObj){
          player=new BasicPlayer();
          playerFrame = playerObj;

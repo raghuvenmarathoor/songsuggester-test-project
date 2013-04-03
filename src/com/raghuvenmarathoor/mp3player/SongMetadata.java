@@ -44,9 +44,11 @@ public class SongMetadata {
     
     String absolutePath = "";
     String channels = "";
-    public String bitRate = "";
+    String bitRate = "";
     String sampleRate = "";
     String trackLength = "";
+    int trackLengthInteger = 0;
+    long filesize = 0;
     String encoder = "";
     String title = "";
     String artist = "";
@@ -57,6 +59,7 @@ public class SongMetadata {
     public SongMetadata(String mp3File){
         try {
             File mp3file=new File(mp3File);
+            filesize = mp3file.length();
             mP3File = (MP3File)AudioFileIO.read(mp3file);
             Tag songTag = mP3File.getTag();
             if(mP3File.hasID3v1Tag()){
@@ -93,6 +96,7 @@ public class SongMetadata {
                bitRate = mp3header.getBitRate();
                sampleRate = mp3header.getSampleRate();
                trackLength = mp3header.getTrackLengthAsString();
+               trackLengthInteger = mp3header.getTrackLength();
                encoder = mp3header.getEncoder();
                fileName = mp3file.getName();
 
@@ -110,6 +114,14 @@ public class SongMetadata {
         }
         
         
+    }
+
+    public long getFilesize() {
+        return filesize;
+    }
+    
+    public int getTrackLengthInteger() {
+        return trackLengthInteger;
     }
     
     public String getFileName() {

@@ -15,6 +15,12 @@ import com.raghuvenmarathoor.mp3player.PlayListManager;
 import com.raghuvenmarathoor.mp3player.SongMetadata;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -30,12 +36,13 @@ public class PlayerFrame extends javax.swing.JFrame {
 
     Thread playerThread = null;
     public static int playlistPointer = 0;
-    
+    boolean mousePressedSlider = false;
     public static boolean play = false;
     boolean pause = false;
     DefaultListModel playListlistmodel = null;
     BasicPlayerTest basePlayer = null;
     PlayListManager playListManager = null;
+     SongMetadata sngmeta = null;
     /** Creates new form PlayerFrame */
     public PlayerFrame() {
         
@@ -45,7 +52,12 @@ public class PlayerFrame extends javax.swing.JFrame {
         basePlayer=new BasicPlayerTest();
         jListPlayList.setCellRenderer(new SelectedListItemStyle());
     }
-    
+    public void setSliderPosition(int sliderPos){
+        if(mousePressedSlider == false){
+            jSliderSeekbar.setValue(sliderPos);
+        }
+        
+    }
     protected File retrieveFromPlaylist(){
         if(jListPlayList.getSelectedIndex() == -1){
             if(playListlistmodel.getSize() == 0){
@@ -86,7 +98,7 @@ public class PlayerFrame extends javax.swing.JFrame {
         jListPlayList = new javax.swing.JList();
         jLabel4 = new javax.swing.JLabel();
         jButtonAddMusic = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        jButtonSavePlaylist = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabelFileName = new javax.swing.JLabel();
@@ -153,7 +165,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                     .addComponent(jLabelSampleRate)
                     .addComponent(jLabelChannels)
                     .addComponent(jLabelBitRate))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +190,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(jLabelTrackLength))
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -187,6 +199,11 @@ public class PlayerFrame extends javax.swing.JFrame {
         jListPlayList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jListPlayListMouseClicked(evt);
+            }
+        });
+        jListPlayList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jListPlayListKeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(jListPlayList);
@@ -207,10 +224,11 @@ public class PlayerFrame extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSavePlaylist.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        jButtonSavePlaylist.setText("Save Playlist");
+        jButtonSavePlaylist.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jButtonSavePlaylistActionPerformed(evt);
             }
         });
 
@@ -220,25 +238,26 @@ public class PlayerFrame extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonAddMusic, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAddMusic)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jButtonSavePlaylist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAddMusic, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
+                    .addComponent(jButtonSavePlaylist, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAddMusic, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -290,7 +309,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                             .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
                         .addGap(210, 210, 210))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -321,7 +340,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelArtist)
                     .addComponent(jLabel8))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -382,7 +401,21 @@ public class PlayerFrame extends javax.swing.JFrame {
             }
         });
 
+        jSliderSeekbar.setMaximum(1000);
         jSliderSeekbar.setValue(0);
+        jSliderSeekbar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jSliderSeekbarMouseReleased(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jSliderSeekbarMousePressed(evt);
+            }
+        });
+        jSliderSeekbar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSliderSeekbarStateChanged(evt);
+            }
+        });
 
         jSliderVolume.setOrientation(javax.swing.JSlider.VERTICAL);
         jSliderVolume.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -393,10 +426,10 @@ public class PlayerFrame extends javax.swing.JFrame {
             }
         });
         jSliderVolume.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 jSliderVolumeCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -434,7 +467,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                         .addGap(1, 1, 1)
                         .addComponent(jLabelStop, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSliderVolume, 0, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jSliderSeekbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -451,21 +484,21 @@ public class PlayerFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGap(20, 20, 20))
         );
 
         jTabbedPane1.addTab("Music Player", jPanel1);
@@ -474,7 +507,7 @@ public class PlayerFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 634, Short.MAX_VALUE)
+            .addGap(0, 648, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -489,8 +522,8 @@ public class PlayerFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,6 +557,7 @@ public void playNextSong(){
     int nextIndex = 0;
     try {
     int currentIndex = jListPlayList.getSelectedIndex();
+    jListPlayList.updateUI();
     
     if(currentIndex == playListlistmodel.getSize()-1){
         nextIndex = 0;
@@ -605,7 +639,7 @@ private void insertFilesToPlayList(){
         };
        jFileChooser1.addChoosableFileFilter(nw);
                jFileChooser1.setMultiSelectionEnabled(true);
-               
+                        
                int res=jFileChooser1.showOpenDialog(this);
                if(res==JFileChooser.APPROVE_OPTION){
                 //   String[] listData = new String[10];
@@ -629,10 +663,6 @@ private void insertFilesToPlayList(){
                
     }
 }
-private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_jComboBox1ActionPerformed
-
 private void jLabelStopMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelStopMouseExited
 jLabelStop.setBorder(BorderFactory.createEmptyBorder());// TODO add your handling code here:
 }//GEN-LAST:event_jLabelStopMouseExited
@@ -644,6 +674,7 @@ jLabelStop.setBorder(BorderFactory.createLineBorder(Color.BLUE));// TODO add you
 private void jLabelStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelStopMouseClicked
  basePlayer.stop();
  play=false;
+ jLabelPlay.setIcon(new ImageIcon(".\\Resources\\play.png"));
 }//GEN-LAST:event_jLabelStopMouseClicked
 
 private void jLabelNextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNextMouseExited
@@ -714,7 +745,7 @@ private void jLabelPreviousMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FI
 }//GEN-LAST:event_jLabelPreviousMouseClicked
 
 private void jSliderVolumeCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jSliderVolumeCaretPositionChanged
-
+   
        // TODO add your handling code here:
 }//GEN-LAST:event_jSliderVolumeCaretPositionChanged
 
@@ -722,18 +753,73 @@ private void jSliderVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
     double volume =(double) jSliderVolume.getValue()/100;
     basePlayer.setVolume(volume);
 }//GEN-LAST:event_jSliderVolumeStateChanged
+
+    private void jSliderSeekbarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderSeekbarStateChanged
+    
+    
+    }//GEN-LAST:event_jSliderSeekbarStateChanged
+
+    private void jSliderSeekbarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderSeekbarMouseReleased
+    long filesize = sngmeta.getFilesize();
+    double sliderValue = (double) jSliderSeekbar.getValue()/1000;
+    //JOptionPane.showMessageDialog(null, sliderValue);
+    long seekPos =(long) (sliderValue*(double)filesize);
+   // JOptionPane.showMessageDialog(null, seekPos);
+    basePlayer.seek(seekPos);
+    mousePressedSlider = false;
+    }//GEN-LAST:event_jSliderSeekbarMouseReleased
+
+    private void jSliderSeekbarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderSeekbarMousePressed
+             
+        mousePressedSlider = true;
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jSliderSeekbarMousePressed
+
+    private void jListPlayListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jListPlayListKeyPressed
+                  // TODO add your handling code here:
+    }//GEN-LAST:event_jListPlayListKeyPressed
+
+    private void jButtonSavePlaylistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSavePlaylistActionPerformed
+        FileOutputStream fileoutputStream = null;
+        ObjectOutputStream objectOutStream = null;
+        try {
+            JFileChooser savePlaylist = new JFileChooser("./playlist/");
+            savePlaylist.showSaveDialog(this);
+            fileoutputStream = new FileOutputStream(savePlaylist.getSelectedFile());
+            objectOutStream = new ObjectOutputStream(fileoutputStream);
+            objectOutStream.writeObject(playListManager);
+            objectOutStream.flush();
+            objectOutStream.close();
+            // TODO add your handling code here:
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }  finally {
+            try {
+                fileoutputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(PlayerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                objectOutStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(PlayerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButtonSavePlaylistActionPerformed
    
 
 public void playThisSong(File songFile,int playingIndex){
         basePlayer.stop();
+        
         playlistPointer = playingIndex;
+       // JOptionPane.showMessageDialog(null, "playing pointer:"+playlistPointer);
 //        ListCellRenderer listcellRender = jListPlayList.getCellRenderer();
 //        listcellRender.getListCellRendererComponent(jListPlayList, jListPlayList.getModel().getElementAt(playlistPointer) , playlistPointer, false , false).setBackground(Color.red);
 //        jListPlayList.updateUI();
         
         basePlayer.play(songFile.getAbsolutePath(),this);
        play = true;     
-    SongMetadata sngmeta=new SongMetadata(songFile.getAbsolutePath());
+   sngmeta=new SongMetadata(songFile.getAbsolutePath());
         jLabelBitRate.setText(sngmeta.getBitRate());
         jLabelChannels.setText(sngmeta.getChannels());
         jLabelEncoder.setText(sngmeta.getEncoder());
@@ -792,7 +878,7 @@ public void playThisSong(File songFile,int playingIndex){
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddMusic;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton jButtonSavePlaylist;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
