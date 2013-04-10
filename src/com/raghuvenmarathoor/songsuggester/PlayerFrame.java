@@ -35,10 +35,12 @@ import javax.swing.filechooser.FileFilter;
 public class PlayerFrame extends javax.swing.JFrame {
 
     Thread playerThread = null;
+    boolean startIdentification = false;
     public static int playlistPointer = 0;
     boolean mousePressedSlider = false;
     public static boolean play = false;
     boolean pause = false;
+    File currentPlayingFile = null;
     DefaultListModel playListlistmodel = null;
     BasicPlayerTest basePlayer = null;
     PlayListManager playListManager = null;
@@ -68,11 +70,18 @@ public class PlayerFrame extends javax.swing.JFrame {
       minutes = elapsedTime/(60);
       hour = minutes/60;
       minutes = minutes % 60;
-      
+      if(minutes>=1){
+          startIdentification = true;
+          
+      }
       
       jLabelElapsedTime.setText(hour+":"+minutes+":"+seconds);
       
      
+    }
+    
+    public double getVolume(){
+        return (double)jSliderVolume.getValue()/100;
     }
     protected File retrieveFromPlaylist(){
         if(jListPlayList.getSelectedIndex() == -1){
@@ -126,8 +135,6 @@ public class PlayerFrame extends javax.swing.JFrame {
         jLabelArtist = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabelGenre = new javax.swing.JLabel();
-        jLabelTrackLengthTotal = new javax.swing.JLabel();
-        jLabelElapsedTime = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabelPrevious = new javax.swing.JLabel();
         jLabelPlay = new javax.swing.JLabel();
@@ -135,6 +142,8 @@ public class PlayerFrame extends javax.swing.JFrame {
         jLabelStop = new javax.swing.JLabel();
         jSliderSeekbar = new javax.swing.JSlider();
         jSliderVolume = new javax.swing.JSlider();
+        jLabelElapsedTime = new javax.swing.JLabel();
+        jLabelTrackLengthTotal = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -305,10 +314,6 @@ public class PlayerFrame extends javax.swing.JFrame {
 
         jLabelGenre.setText("<genre>");
 
-        jLabelTrackLengthTotal.setText("jLabel12");
-
-        jLabelElapsedTime.setText("jLabel13");
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -338,12 +343,6 @@ public class PlayerFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabelFileName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(85, 85, 85))
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(111, 111, 111)
-                .addComponent(jLabelElapsedTime)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelTrackLengthTotal)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,11 +367,7 @@ public class PlayerFrame extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelArtist)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelTrackLengthTotal)
-                    .addComponent(jLabelElapsedTime))
-                .addGap(58, 58, 58))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -458,12 +453,16 @@ public class PlayerFrame extends javax.swing.JFrame {
             }
         });
         jSliderVolume.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 jSliderVolumeCaretPositionChanged(evt);
             }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
         });
+
+        jLabelElapsedTime.setText("jLabel13");
+
+        jLabelTrackLengthTotal.setText("jLabel12");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -473,16 +472,25 @@ public class PlayerFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabelStop, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabelElapsedTime)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabelStop, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabelPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabelPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelNext, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jSliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabelNext, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jSliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabelTrackLengthTotal))))
                     .addComponent(jSliderSeekbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -490,16 +498,25 @@ public class PlayerFrame extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelNext, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabelStop, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSliderVolume, 0, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabelStop, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabelElapsedTime)
+                                    .addComponent(jLabelTrackLengthTotal))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jSliderVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jSliderSeekbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -588,7 +605,7 @@ private void jButtonAddMusicActionPerformed(java.awt.event.ActionEvent evt) {//G
 public void playNextSong(){
     int nextIndex = 0;
     try {
-    int currentIndex = jListPlayList.getSelectedIndex();
+    int currentIndex = playlistPointer;
     jListPlayList.updateUI();
     
     if(currentIndex == playListlistmodel.getSize()-1){
@@ -614,7 +631,7 @@ public void playNextSong(){
 public void playPreviousSong() {
    int previousIndex = 0;
    try {
-    int currentIndex = jListPlayList.getSelectedIndex();
+    int currentIndex = playlistPointer;
     
     if(currentIndex == 0){
         JOptionPane.showMessageDialog(null, "current index = 0");
@@ -670,6 +687,7 @@ private void insertFilesToPlayList(){
             }
         };
        jFileChooser1.addChoosableFileFilter(nw);
+       jFileChooser1.setAcceptAllFileFilterUsed(false);
                jFileChooser1.setMultiSelectionEnabled(true);
                         
                int res=jFileChooser1.showOpenDialog(this);
@@ -706,6 +724,7 @@ jLabelStop.setBorder(BorderFactory.createLineBorder(Color.BLUE));// TODO add you
 private void jLabelStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelStopMouseClicked
  basePlayer.stop();
  play=false;
+ currentPlayingFile = null;
  jLabelPlay.setIcon(new ImageIcon(".\\Resources\\play.png"));
 }//GEN-LAST:event_jLabelStopMouseClicked
 
@@ -848,7 +867,7 @@ public void playThisSong(File songFile,int playingIndex){
 //        ListCellRenderer listcellRender = jListPlayList.getCellRenderer();
 //        listcellRender.getListCellRendererComponent(jListPlayList, jListPlayList.getModel().getElementAt(playlistPointer) , playlistPointer, false , false).setBackground(Color.red);
 //        jListPlayList.updateUI();
-        
+        currentPlayingFile = songFile;
         
    sngmeta=new SongMetadata(songFile.getAbsolutePath());
         jLabelBitRate.setText(sngmeta.getBitRate());

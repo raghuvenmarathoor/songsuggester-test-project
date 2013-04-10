@@ -11,7 +11,9 @@ import java.io.Serializable;
  * @author New User
  */
 public class AppSettings implements Serializable {
-    String codegenpath = "";
-    boolean useIdentification = false;
+    
+    String currentPlaylistDirectory = "";
     
 }
+
+

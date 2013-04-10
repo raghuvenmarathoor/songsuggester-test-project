@@ -103,6 +103,7 @@ public class BasicPlayerTest implements BasicPlayerListener{
           if(control!=null){
            control.stop();
            control = null;
+           elapsedTimeFlag = false;
              // control.seek(10000);
           }
         } catch (BasicPlayerException ex) {
@@ -138,8 +139,11 @@ public class BasicPlayerTest implements BasicPlayerListener{
             File newFile=new File(fileName);
             fileSize = newFile.length();
             control.open(newFile);
-           // control.setGain(0.5);
+            playerVolume = playerFrame.getVolume();
+            //control.setGain(playerVolume);
+            
             control.play();
+            setVolume(playerVolume);
            }catch(BasicPlayerException e){
             System.out.println(e.getCause());
              }
@@ -150,7 +154,7 @@ public class BasicPlayerTest implements BasicPlayerListener{
             if(control != null){
             try{
                 //JOptionPane.showMessageDialog(null,"VOlume"+ volume);
-                control.setGain(volume);
+                control.setGain(playerVolume);
             } catch(BasicPlayerException ex){
                 JOptionPane.showMessageDialog(null, "Volume changing error:" + ex.getMessage());
             }

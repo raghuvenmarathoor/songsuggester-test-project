@@ -369,13 +369,6 @@
                           </Group>
                           <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="111" max="-2" attributes="0"/>
-                          <Component id="jLabelElapsedTime" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabelTrackLengthTotal" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -407,11 +400,6 @@
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabelTrackLengthTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelElapsedTime" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -469,16 +457,6 @@
                     <Property name="text" type="java.lang.String" value="&lt;genre&gt;"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabelTrackLengthTotal">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel12"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabelElapsedTime">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel13"/>
-                  </Properties>
-                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel5">
@@ -500,8 +478,12 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jLabelStop" alignment="1" min="-2" pref="84" max="-2" attributes="1"/>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jLabelElapsedTime" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="jLabelStop" min="-2" pref="84" max="-2" attributes="1"/>
+                                      </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabelPrevious" min="-2" pref="100" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -509,9 +491,18 @@
                                       </Group>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jLabelNext" min="-2" pref="100" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jSliderVolume" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabelNext" min="-2" pref="100" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="jSliderVolume" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Component id="jLabelTrackLengthTotal" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                               <Component id="jSliderSeekbar" alignment="0" max="32767" attributes="1"/>
                           </Group>
@@ -523,19 +514,33 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabelNext" alignment="3" min="-2" pref="100" max="-2" attributes="0"/>
                                       <Component id="jLabelPlay" alignment="3" min="-2" pref="83" max="-2" attributes="0"/>
                                       <Component id="jLabelPrevious" alignment="3" min="-2" pref="100" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                  <Component id="jLabelStop" min="-2" pref="90" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                          <Component id="jLabelStop" min="-2" pref="90" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace pref="85" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="jLabelElapsedTime" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabelTrackLengthTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
-                              <Component id="jSliderVolume" min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jSliderVolume" min="-2" pref="182" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace pref="14" max="32767" attributes="0"/>
                           <Component id="jSliderSeekbar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
@@ -621,6 +626,16 @@
                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSliderVolumeStateChanged"/>
                     <EventHandler event="caretPositionChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="jSliderVolumeCaretPositionChanged"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelElapsedTime">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel13"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelTrackLengthTotal">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel12"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
