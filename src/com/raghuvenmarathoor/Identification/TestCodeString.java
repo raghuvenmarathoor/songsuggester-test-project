@@ -13,8 +13,11 @@ package com.raghuvenmarathoor.Identification;
 //import com.raghuvenmarathoor.mp3player.MyPlayer;
 import com.raghuvenmarathoor.mp3player.MyPlayer;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 //import com.raghuvenmarathoor.mp3player.MyPlayer;
 
@@ -150,45 +153,53 @@ private  boolean resume=false;
     
     
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            CheckCRC newCRC = new CheckCRC(jFileChooser1.getSelectedFile());
+            JOptionPane.showMessageDialog(null, newCRC.getCRC());
+        //    playerThread=new Thread(new MyPlayer(jFileChooser1.getSelectedFile()));
+        //
+        //
+        //    if(started==false)
+        //        
+        //{
+        //            try {
+        //                playerThread.start();
+        //                
+        //                //jTextField2.setText("sleeping");
+        //                //Thread.sleep(10000);
+        //                //jTextField2.setText("myplayer sleeping");
+        //                //playerThread.sleep(10000);
+        //                //MyPlayer.sleep(5000);
+        //                //playerThread.suspend();
+        //                
+        //                //playerThread.suspend();
+        //                //playerThread.sleep(5000);
+        //                //playerThread.resume();
+        //                //playerThread=new MyPlayer();
+        //                
+        //                jTextField2.setText("returned");
+        //               
+        //                
+        //            //    playerPauseThread.start();
+        //               // playerPauseThread.setPriority(Thread.MAX_PRIORITY);
+        //                started=true;
+        //            }
+        //            // TODO add your handling code here:
+        //            catch (Exception ex) {
+        //                Logger.getLogger(TestCodeString.class.getName()).log(Level.SEVERE, null, ex);
+        //            }
+           
 
-    playerThread=new Thread(new MyPlayer(jFileChooser1.getSelectedFile()));
 
+            
 
-    if(started==false)
-        
-{
-            try {
-                playerThread.start();
-                
-                //jTextField2.setText("sleeping");
-                //Thread.sleep(10000);
-                //jTextField2.setText("myplayer sleeping");
-                //playerThread.sleep(10000);
-                //MyPlayer.sleep(5000);
-                //playerThread.suspend();
-                
-                //playerThread.suspend();
-                //playerThread.sleep(5000);
-                //playerThread.resume();
-                //playerThread=new MyPlayer();
-                
-                jTextField2.setText("returned");
-               
-                
-            //    playerPauseThread.start();
-               // playerPauseThread.setPriority(Thread.MAX_PRIORITY);
-                started=true;
-            }
-            // TODO add your handling code here:
-            catch (Exception ex) {
-                Logger.getLogger(TestCodeString.class.getName()).log(Level.SEVERE, null, ex);
-            }
-   }
-
-    
-
-    
-// TODO add your handling code here:
+            
+        // TODO add your handling code here:
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TestCodeString.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TestCodeString.class.getName()).log(Level.SEVERE, null, ex);
+        }
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed

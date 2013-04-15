@@ -10,12 +10,12 @@
  */
 package com.raghuvenmarathoor.songsuggester;
 
+import com.raghuvenmarathoor.Identification.SongIdentification;
 import com.raghuvenmarathoor.mp3player.BasicPlayerTest;
 import com.raghuvenmarathoor.mp3player.PlayListManager;
 import com.raghuvenmarathoor.mp3player.SongMetadata;
 import java.awt.Color;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -26,7 +26,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.ListCellRenderer;
 import javax.swing.filechooser.FileFilter;
 /**
  *
@@ -72,7 +71,7 @@ public class PlayerFrame extends javax.swing.JFrame {
       minutes = minutes % 60;
       if(minutes>=1){
           startIdentification = true;
-          
+          SongIdentification sngIdentify = new SongIdentification(currentPlayingFile);
       }
       
       jLabelElapsedTime.setText(hour+":"+minutes+":"+seconds);
