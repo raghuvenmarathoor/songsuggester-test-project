@@ -4,11 +4,10 @@
  */
 package com.raghuvenmarathoor.Identification;
 
+import com.raghuvenmarathoor.appmanager.CheckService;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,6 +17,8 @@ import javax.swing.JOptionPane;
 public class SongIdentification {
     public SongIdentification(File songFile){
         try {  
+            CheckService cService = new CheckService();
+            cService.check();
             CheckCRC crcOfFile = new CheckCRC(songFile);
             long current = crcOfFile.getCRC();
             JOptionPane.showMessageDialog(null, current);

@@ -4,4 +4,6 @@
     <system systemId="http://localhost:8080/glassfishsuggester/IdentifySong?xsd=1" uri="xml-resources/web-service-references/IdentifySong/wsdl/localhost_8080/glassfishsuggester/IdentifySong.xsd_1.xsd"/>
     <system systemId="http://localhost:8084/SongSuggesterWebService/SongIdentify?wsdl" uri="xml-resources/web-service-references/SongIdentify_1/wsdl/localhost_8084/SongSuggesterWebService/SongIdentify.wsdl"/>
     <system systemId="http://localhost:8084/SongSuggesterWebService/SongIdentify?xsd=1" uri="xml-resources/web-service-references/SongIdentify_1/wsdl/localhost_8084/SongSuggesterWebService/SongIdentify.xsd_1.xsd"/>
+    <system systemId="http://localhost:8084/SongSuggesterWebService/CheckAvailability?wsdl" uri="xml-resources/web-service-references/CheckAvailability/wsdl/localhost_8084/SongSuggesterWebService/CheckAvailability.wsdl"/>
+    <system systemId="http://localhost:8084/SongSuggesterWebService/CheckAvailability?xsd=1" uri="xml-resources/web-service-references/CheckAvailability/wsdl/localhost_8084/SongSuggesterWebService/CheckAvailability.xsd_1.xsd"/>
 </catalog>

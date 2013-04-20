@@ -52,5 +52,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/SongIdentify_1"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/com/raghuvenmarathoor/webservices"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-IdentifySong, wsimport-client-SongIdentify_1"/>
+    <target name="wsimport-client-CheckAvailability" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/CheckAvailability"/>
+        <property name="wsdl-CheckAvailability" location="xml-resources/web-service-references/CheckAvailability/wsdl/localhost_8084/SongSuggesterWebService/CheckAvailability.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/CheckAvailability" destdir="${build.generated.dir}/jax-wsCache/CheckAvailability" wsdl="${wsdl-CheckAvailability}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8084/SongSuggesterWebService/CheckAvailability?wsdl" xnocompile="true" xendorsed="true" package="com.raghuvenmarathoor.appmanager">
+            <depends file="${wsdl-CheckAvailability}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/CheckAvailability"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/CheckAvailability">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-CheckAvailability" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/CheckAvailability"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/raghuvenmarathoor/appmanager"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-IdentifySong, wsimport-client-SongIdentify_1, wsimport-client-CheckAvailability"/>
 </project>
